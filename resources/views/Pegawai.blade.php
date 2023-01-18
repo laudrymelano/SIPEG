@@ -385,12 +385,29 @@
                         },
                         {
                             data: function(row) {
-                                return '<a title="Delete" class="btn action-btn btn-danger btn-md delete-btn" data-id"' +
+                                return '<a title="Delete" class="btn action-btn btn-danger btn-md delete-btn" data-id="' +
                                     row.id + '">' + '<i class="fas fa-trash-alt"></i></a>'
                             },
-                            name: "id"
+                            name: 'id'
                         }
                     ],
+                });
+            });
+
+            $(document).on('click', '.delete-btn', function(event) {
+                // var id = $(event.currentTarget).data('id');
+                var id = $(event.currentTarget).attr('data-id');
+                // var id = $(event.currentTarget).attr('data-id');
+                $.ajax({
+                    url: "{{ url('api/delete/pegawai') }}" + "/" + id,
+                    type: "DELETE",
+                    DataType: "json",
+                    data: function(d) {
+                        d._token = '{{ csrf_token() }}';
+                    },
+                    success: function(response) {
+                        $("#datatableExport").DataTable().ajax.reload(null, false);
+                    }
                 });
             });
         </script>

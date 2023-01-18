@@ -24,7 +24,6 @@ class AkunSeeder extends Seeder
                 'alamat' => $item['alamat'],
                 'no_telp' => $item['no_telp'],
                 'id_jabatan' => $item['id_jabatan'],
-                'id_kontrak' => $item['id_kontrak']
             ];
         }
 
@@ -34,7 +33,7 @@ class AkunSeeder extends Seeder
     private function getData()
     {
         return [
-            ["nama" => "laudry", "password" => bcrypt('123456'), "alamat" => "jl.flamboyan", "no_telp" => "0123456", "id_jabatan" => "1", "id_kontrak" => "1"],
+            ["nama" => "laudry", "password" => bcrypt('123456'), "alamat" => "jl.flamboyan", "no_telp" => "0123456", "id_jabatan" => "1"],
 
         ];
     }

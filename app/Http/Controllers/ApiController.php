@@ -90,4 +90,23 @@ class ApiController extends Controller
             ], 400);
         }
     }
+
+    public function destroyPegawai($id)
+    {
+        $data = Pegawai::find($id);
+        $data->delete();
+
+        if ($data) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Pegawai berhasil dihapus',
+                'data' => $data
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Pegawai tidak berhasil dihapus'
+            ], 400);
+        }
+    }
 }

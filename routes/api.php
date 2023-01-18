@@ -21,3 +21,4 @@ use App\Http\Controllers\ApiController;
 
 Route::post('pegawai', [ApiController::class, 'getDataPegawai']);
 Route::post('add/pegawai', [ApiController::class, 'addPegawai']);
+Route::delete('delete/pegawai/{id}', [ApiController::class, 'destroyPegawai']);
