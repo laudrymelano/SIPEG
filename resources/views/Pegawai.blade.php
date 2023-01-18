@@ -360,23 +360,36 @@
                         }
                     },
                     columns: [{
-                            data: "nama"
+                            data: "nama",
+                            name: "nama"
                         },
                         {
-                            data: "alamat"
+                            data: "alamat",
+                            name: "alamat"
                         },
                         {
-                            data: "no_telp"
+                            data: "no_telp",
+                            name: "no_telp"
                         },
                         {
-                            data: "posisi"
+                            data: "posisi",
+                            name: "posisi"
                         },
                         {
-                            data: "durasi"
+                            data: "durasi",
+                            name: "durasi"
                         },
                         {
-                            data: "gaji"
+                            data: "gaji",
+                            name: "gaji"
                         },
+                        {
+                            data: function(row) {
+                                return '<a title="Delete" class="btn action-btn btn-danger btn-md delete-btn" data-id"' +
+                                    row.id + '">' + '<i class="fas fa-trash-alt"></i></a>'
+                            },
+                            name: "id"
+                        }
                     ],
                 });
             });

@@ -24,7 +24,7 @@ class ApiController extends Controller
         } else {
             $data = Pegawai::join('jabatan', 'pegawai.id_jabatan', '=', 'jabatan.id')
                 ->join('kontrak', 'pegawai.id', '=', 'kontrak.id_pegawai')
-                ->select('pegawai.nama', 'pegawai.alamat', 'pegawai.no_telp', 'jabatan.posisi', 'kontrak.durasi', 'kontrak.gaji')
+                ->select('pegawai.nama', 'pegawai.alamat', 'pegawai.no_telp', 'jabatan.posisi', 'kontrak.durasi', 'kontrak.gaji', 'pegawai.id')
                 ->get();
             // $data = Pegawai::all();
         }
