@@ -51,9 +51,10 @@
     <script src="{{ asset('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('assets/dist/js/pages/dashboard.js') }}"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    {{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
 @endpush
 @section('content')
+    {{-- @include('flash-message') --}}
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="col-lg-3 col-6">
@@ -395,18 +396,31 @@
             });
 
             $(document).on('click', '.delete-btn', function(event) {
-                // var id = $(event.currentTarget).data('id');
                 var id = $(event.currentTarget).attr('data-id');
-                // var id = $(event.currentTarget).attr('data-id');
-                $.ajax({
-                    url: "{{ url('api/delete/pegawai') }}" + "/" + id,
-                    type: "DELETE",
-                    DataType: "json",
-                    data: function(d) {
-                        d._token = '{{ csrf_token() }}';
-                    },
-                    success: function(response) {
-                        $("#datatableExport").DataTable().ajax.reload(null, false);
+                swal({
+                    title: "Anda Yakin?",
+                    text: 'Apakah anda yakin akan menghapus pegawai ini?',
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "{{ url('api/delete/pegawai') }}" + "/" + id,
+                            type: "DELETE",
+                            DataType: "json",
+                            data: function(d) {
+                                d._token = '{{ csrf_token() }}';
+                            },
+                            success: function(response) {
+                                $("#datatableExport").DataTable().ajax.reload(null, false);
+                            },
+                        });
+                        swal("Data berhasil dihapus", {
+                            icon: "success",
+                        });
+                    } else {
+                        swal("Calon tidak di hapus");
                     }
                 });
             });

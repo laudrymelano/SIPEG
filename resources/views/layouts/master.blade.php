@@ -11,6 +11,7 @@
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     @stack('custom-css')
     <!-- Theme style -->
     <!-- DataTables -->
@@ -22,6 +23,7 @@
     {{-- trix --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/dist/css/trix.css') }}">
     <script type="text/javascript" src="{{ asset('assets/dist/js/trix.js') }}"></script>
+    {{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -53,8 +55,8 @@
 
             <!-- Main content -->
             <section class="content">
-                @include('flash-message')
                 @yield('content')
+                @include('flash-message')
             </section>
             <!-- /.content -->
         </div>
@@ -91,6 +93,7 @@
     <script src="{{ asset('assets/plugins/daterangepicker/daterangepicker.js') }}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="{{ asset('assets/plugins/summernote/summernote.js') }}"></script>
+
     <script>
         $(function() {
             $('#datatable-export').DataTable({
