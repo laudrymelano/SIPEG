@@ -122,7 +122,7 @@
                         @csrf
                         <div class="modal-body">
                             {{-- <form> --}}
-                            <div class="form-group">
+                            <div id="nama-group" class="form-group">
                                 <label for="nama">Nama</label>
                                 <input type="text" value="{{ old('nama') }}" class="form-control" id="nama"
                                     name="nama" placeholder="Nama Pegawai">
@@ -165,7 +165,8 @@
                             <div class="form-group">
                                 <label for="jabatan">Jabatan</label>
                                 <br>
-                                <select class="form-select" name="id_jabatan" aria-label="Default select example">
+                                <select class="form-select" name="id_jabatan" id="id_jabatan"
+                                    aria-label="Default select example">
                                     <option selected>-- Pilih Posisi --</option>
                                     <option value="1">Karyawan</option>
                                     <option value="2">Manager</option>
@@ -298,12 +299,35 @@
 
                 $tr = $(this).closest('tr');
 
-                $('#addPegawai').attr('action', "{{ url('/api/add/pegawai') }}");
+                $('#addPegawai').submit(function(event) {
+                    var formData = {
+                        nama: $('#nama').val(),
+                        password: $('#password').val(),
+                        alamat: $('#alamat').val(),
+                        no_telp: $('#no_telp').val(),
+                        id_jabatan: $('#id_jabatan').val(),
+                        durasi: $('#durasi').val(),
+                        gaji: $('#gaji').val(),
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('api/add/pegawai') }}",
+                        data: formData,
+                        DataType: "json",
+                        encode: true,
+                        success: function(response) {
+                            window.location = "{{ url('/dashboard') }}";
+                        },
+                    });
+                    $("#datatableExport").DataTable().ajax.reload(null, false);
+                    event.preventDefault();
+                });
             });
         </script>
         <script>
             $(document).ready(() => {
-                // $("#datatableExport").DataTable().ajax.reload();
+
                 $("#datatableExport").DataTable({
                     responsive: true,
                     destroy: true,

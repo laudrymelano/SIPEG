@@ -75,7 +75,7 @@ class ApiController extends Controller
             'id_pegawai' =>  $id_pegawai
         ]);
         // return DataTables::of($data)->toJson();
-        return redirect('/dashboard')->with('success', "Pegawai berhasil dibuat");
+        // return redirect('/dashboard')->with('success', "Pegawai berhasil dibuat");
 
         if ($pegawai && $kontrak) {
             return response()->json([
