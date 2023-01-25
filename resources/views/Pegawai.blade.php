@@ -218,49 +218,39 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Calon</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Pegawai</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="" method="POST" id="editCalon" enctype="multipart/form-data">
+                    <form action="" method="POST" id="editPegawai" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="modal-body">
                             {{-- <form> --}}
-                            <div class="form-group">
-                                <label for="capres">Calon Presiden</label>
-                                <input type="text" value="{{ old('calon_presiden') }}" class="form-control"
-                                    id="calon_presiden_edit" name="calon_presiden" placeholder="Calon Presiden">
-                                @error('calon_presiden')
+                            <div id="nama-group" class="form-group">
+                                <label for="nama">Nama</label>
+                                <input type="text" value="{{ old('nama') }}" class="form-control" id="nama-edit"
+                                    name="nama" placeholder="Nama Pegawai">
+                                @error('nama')
                                     <div class="text-danger mt-2">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
-                            <div class="form-group">
-                                <label for="cawapres">Calon Wapres</label>
-                                <input type="text" value="{{ old('calon_wapres') }}" class="form-control"
-                                    id="calon_wapres_edit" name="calon_wapres" placeholder="Calon Wapres">
-                                @error('calon_wapres')
+                            {{-- <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="text" value="{{ old('password') }}" class="form-control"
+                                    id="password-edit" name="password" placeholder="Password">
+                                @error('password')
                                     <div class="text-danger mt-2">
                                         {{ $message }}
                                     </div>
                                 @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="asalPartai">Asal Partai</label>
-                                <input type="text" value="{{ old('asal_partai') }}" class="form-control"
-                                    id="asal_partai_edit" name="asal_partai" placeholder="Asal Partai">
-                                @error('asal_partai')
-                                    <div class="text-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label for="alamat">Alamat</label>
-                                <input type="text" value="{{ old('alamat') }}" class="form-control" id="alamat_edit"
+                                <input type="text" value="{{ old('alamat') }}" class="form-control" id="alamat-edit"
                                     name="alamat" placeholder="Alamat">
                                 @error('alamat')
                                     <div class="text-danger mt-2">
@@ -269,14 +259,50 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="fotoPresiden">Foto Presiden</label>
-                                <input type="file" class="form-control" id="photo_presiden" name="photo_presiden"
-                                    placeholder="Foto Presiden">
+                                <label for="No_Telp">No. Telepon</label>
+                                <input type="text" value="{{ old('no_telp') }}" class="form-control"
+                                    id="no_telp-edit" name="no_telp" placeholder="No. Telepon">
+                                @error('no_telp')
+                                    <div class="text-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="form-group">
-                                <label for="fotoWapres">Foto Wapres</label>
-                                <input type="file" class="form-control" id="photo_wapres" name="photo_wapres"
-                                    placeholder="Foto Wapres">
+                                <label for="jabatan">Jabatan</label>
+                                <br>
+                                <select class="form-select" name="id_jabatan" id="id_jabatan-edit"
+                                    aria-label="Default select example">
+                                    <option selected>-- Pilih Posisi --</option>
+                                    <option value="1">Karyawan</option>
+                                    <option value="2">Manager</option>
+                                    <option value="3">Direktur</option>
+                                </select>
+                                @error('id_jabatan')
+                                    <div class="text-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="Kontrak">Kontrak</label>
+                                <input type="text" value="{{ old('durasi') }}" class="form-control" id="durasi-edit"
+                                    name="durasi" placeholder="Kontrak Kerja">
+                                @error('durasi')
+                                    <div class="text-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="Gaji">Gaji</label>
+                                <input type="text" value="{{ old('gaji') }}" class="form-control" id="gaji-edit"
+                                    name="gaji" placeholder="Gaji">
+                                @error('gaji')
+                                    <div class="text-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
                             {{-- </form> --}}
@@ -293,6 +319,66 @@
     @endsection
 
     @section('scripts')
+        <script>
+            $(document).on('click', '.edit-btn', function(event) {
+                var id = $(event.currentTarget).attr('data-id');
+                var selected_option = $(this).val();
+                // console.log(id);
+                // var table = $("#datatableExport").DataTable();
+
+                $tr = $(this).closest('tr');
+                // if ($($tr).hasClass('child')) {
+                //     $tr = $tr.prev('.parent');
+                // }
+
+                // var data = table.row($tr).data()
+
+                var data = $tr.children("td").map(function() {
+                    return $(this).text();
+                }).get();
+
+                // console.log(data);
+                $('#nama-edit').val(data[0]);
+                $('#alamat-edit').val(data[1]);
+                $('#no_telp-edit').val(data[2]);
+                $('#id_jabatan-edit').val(data[3]);
+                $('select[name="id_jabatan"]').removeAttr("disabled").html('');
+                $('select[name="id_jabatan"]').append('<option value="">--Pilih Posisi--</option>');
+                $('select[name="id_jabatan"]').append('<option value="' + id + '">' + data[3] + '</option>');
+                // $('select[name="id_jabatan"]').append(
+                //     '<option value="' + id + '">' +
+                //     val.data[3] + '</option>');
+                $('#durasi-edit').val(data[4]);
+                $('#gaji-edit').val(data[5]);
+                // $('#editPegawai').attr('action', 'api/edit/pegawai/' + id);
+                $('#editModal').modal('show');
+
+                $('#editPegawai').submit(function(event) {
+                    var formData = {
+                        nama: $('#nama-edit').val(),
+                        alamat: $('#alamat-edit').val(),
+                        no_telp: $('#no_telp-edit').val(),
+                        id_jabatan: $('#id_jabatan-edit').val(),
+                        durasi: $('#durasi-edit').val(),
+                        gaji: $('#gaji-edit').val(),
+                    };
+
+                    $.ajax({
+                        type: "PUT",
+                        url: "{{ url('api/edit/pegawai') }}" + "/" + id,
+                        data: formData,
+                        DataType: "json",
+                        encode: true,
+                        success: function(response) {
+                            window.location = "{{ url('/dashboard') }}";
+                        },
+                    });
+                    $("#datatableExport").DataTable().ajax.reload(null, false);
+                    event.preventDefault();
+                });
+
+            });
+        </script>
         <script>
             $('.add').click(function() {
                 $('#addModal').modal('show');
@@ -410,7 +496,9 @@
                         },
                         {
                             data: function(row) {
-                                return '<a title="Delete" class="btn action-btn btn-danger btn-md delete-btn" data-id="' +
+                                return '<a title="Edit" class="btn action-btn btn-primary btn-sm edit-btn" data-id="' +
+                                    row.id + '">' + '<i class="fas fa-user-edit"></i></a>' + '&nbsp;' +
+                                    '<a title="Delete" class="btn action-btn btn-danger btn-sm delete-btn" data-id="' +
                                     row.id + '">' + '<i class="fas fa-trash-alt"></i></a>'
                             },
                             name: 'id'
@@ -418,6 +506,8 @@
                     ],
                 });
             });
+
+
 
             $(document).on('click', '.delete-btn', function(event) {
                 var id = $(event.currentTarget).attr('data-id');
@@ -444,7 +534,7 @@
                             icon: "success",
                         });
                     } else {
-                        swal("Calon tidak di hapus");
+                        swal("Pegawai tidak jadi dihapus");
                     }
                 });
             });
@@ -452,45 +542,4 @@
     @endsection
 
     @section('scripts')
-        <script>
-            $('.edit').click(function() {
-                var id = $(this).attr('id-candidate');
-                $('#editModal').modal('show')
-                $tr = $(this).closest('tr');
-
-                var data = $tr.children("td").map(function() {
-                    return $(this).text();
-                }).get();
-
-                console.log(data);
-                $('#nama_edit').val(data[1]);
-                $('#alamat_edit').val(data[2]);
-                $('#no_telp_edit').val(data[3]);
-                $('#id_jabatan_edit').val(data[4]);
-                $('#editPegawai').attr('action', '/edit/pegawai/' + id);
-            });
-        </script>
-
-        <script>
-            $('.delete').click(function() {
-                var id = $(this).attr('id-pegawai');
-                swal({
-                        title: "Anda Yakin?",
-                        text: "Pegawai dengan nama " + pegawai + " akan di hapus",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
-                            window.location = "/delete/pegawai/" + id;
-                            swal("Data berhasil dihapus", {
-                                icon: "success",
-                            });
-                        } else {
-                            swal("Calon tidak di hapus");
-                        }
-                    });
-            });
-        </script>
     @endsection

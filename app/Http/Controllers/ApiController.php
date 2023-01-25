@@ -80,7 +80,37 @@ class ApiController extends Controller
         if ($pegawai && $kontrak) {
             return response()->json([
                 'status' => true,
-                'message' => 'pegawai berhasil ditambahkan',
+                'message' => 'Pegawai berhasil ditambahkan',
+                'data' => $pegawai, $kontrak
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'failed'
+            ], 400);
+        }
+    }
+    public function editPegawai(Request $request, $id)
+    {
+
+
+        $pegawai = Pegawai::find($id);
+        $kontrak = Kontrak::find($id);
+
+        $pegawai->nama = $request->input('nama');
+        $pegawai->alamat = $request->input('alamat');
+        $pegawai->no_telp = $request->input('no_telp');
+        $pegawai->id_jabatan = $request->input('id_jabatan');
+        $kontrak->durasi = $request->input('durasi');
+        $kontrak->gaji = $request->input('gaji');
+
+        $pegawai->save();
+        $kontrak->save();
+
+        if ($pegawai && $kontrak) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Pegawai berhasil diedit',
                 'data' => $pegawai, $kontrak
             ], 200);
         } else {
