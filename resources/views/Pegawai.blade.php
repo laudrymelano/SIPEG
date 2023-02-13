@@ -126,9 +126,10 @@
                                 <label for="nama">Nama</label>
                                 <input type="text" value="{{ old('nama') }}" class="form-control" id="nama"
                                     name="nama" placeholder="Nama Pegawai">
-                                @error('nama')
+                               <span class="text-danger error-text nama_error"></span>
+                               @error('nama')
                                     <div class="text-danger mt-2">
-                                        {{ $message }}
+                                        {{ $error }}
                                     </div>
                                 @enderror
                             </div>
@@ -136,31 +137,19 @@
                                 <label for="password">Password</label>
                                 <input type="text" value="{{ old('password') }}" class="form-control" id="password"
                                     name="password" placeholder="Password">
-                                @error('password')
-                                    <div class="text-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                <span class="text-danger error-text password_error"></span>
                             </div>
                             <div class="form-group">
                                 <label for="alamat">Alamat</label>
                                 <input type="text" value="{{ old('alamat') }}" class="form-control" id="alamat"
                                     name="alamat" placeholder="Alamat">
-                                @error('alamat')
-                                    <div class="text-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                <span class="text-danger error-text alamat_error"></span>
                             </div>
                             <div class="form-group">
                                 <label for="No_Telp">No. Telepon</label>
                                 <input type="text" value="{{ old('no_telp') }}" class="form-control" id="no_telp"
                                     name="no_telp" placeholder="No. Telepon">
-                                @error('no_telp')
-                                    <div class="text-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                    <span class="text-danger error-text no_telp_error"></span>
                             </div>
                             <div class="form-group">
                                 <label for="jabatan">Jabatan</label>
@@ -172,31 +161,19 @@
                                     <option value="2">Manager</option>
                                     <option value="3">Direktur</option>
                                 </select>
-                                @error('id_jabatan')
-                                    <div class="text-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                <span class="text-danger error-text id_jabatan_error"></span>
                             </div>
                             <div class="form-group">
                                 <label for="Kontrak">Kontrak</label>
                                 <input type="text" value="{{ old('durasi') }}" class="form-control" id="durasi"
                                     name="durasi" placeholder="Kontrak Kerja">
-                                @error('durasi')
-                                    <div class="text-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                    <span class="text-danger error-text durasi_error"></span>
                             </div>
                             <div class="form-group">
                                 <label for="Gaji">Gaji</label>
                                 <input type="text" value="{{ old('gaji') }}" class="form-control" id="gaji"
                                     name="gaji" placeholder="Gaji">
-                                @error('gaji')
-                                    <div class="text-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                    <span class="text-danger error-text gaji_error"></span>
                             </div>
                             {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
                             {{-- </form> --}}
@@ -344,7 +321,10 @@
                 $('#id_jabatan-edit').val(data[3]);
                 $('select[name="id_jabatan"]').removeAttr("disabled").html('');
                 $('select[name="id_jabatan"]').append('<option value="">--Pilih Posisi--</option>');
-                $('select[name="id_jabatan"]').append('<option value="' + id + '">' + data[3] + '</option>');
+                $('select[name="id_jabatan"]').append('<option value="1">Karyawan</option>');
+                $('select[name="id_jabatan"]').append('<option value="2">Manager</option>');
+                $('select[name="id_jabatan"]').append('<option value="3">Direktur</option>');
+                // $('select[name="id_jabatan"]').append('<option value="' + id + '">' + data[3] + '</option>');
                 // $('select[name="id_jabatan"]').append(
                 //     '<option value="' + id + '">' +
                 //     val.data[3] + '</option>');
@@ -402,9 +382,21 @@
                         data: formData,
                         DataType: "json",
                         encode: true,
-                        success: function(response) {
-                            window.location = "{{ url('/dashboard') }}";
+                        beforeSend: function(){
+                            $(document).find('span.error-text').text(''); 
                         },
+                        success: function(data) {
+                                window.location = "{{ url('/dashboard') }}";
+                                alert(data.message);
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            if ($.isEmptyObject(errors) == false){
+                               $.each(errors.error, function(prefix, val){
+                                    $('span.'+prefix+'_error').text(val[0]);
+                               });
+                            }
+                        }
                     });
                     $("#datatableExport").DataTable().ajax.reload(null, false);
                     event.preventDefault();
@@ -528,6 +520,7 @@
                             },
                             success: function(response) {
                                 $("#datatableExport").DataTable().ajax.reload(null, false);
+                                window.location = "{{ url('/dashboard') }}";
                             },
                         });
                         swal("Data berhasil dihapus", {

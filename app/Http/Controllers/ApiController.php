@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 // use Yajra\DataTables\DataTables;
 use DataTables;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
@@ -49,7 +50,7 @@ class ApiController extends Controller
 
     public function addPegawai(Request $request)
     {
-        $request->validate([
+       $validator = Validator::make($request->all(),[
             'nama' => 'required',
             'alamat' => 'required',
             'password' => 'required|min:6',
@@ -58,6 +59,13 @@ class ApiController extends Controller
             'durasi' => 'required',
             'gaji' => 'required'
         ]);
+
+        if(!$validator->passes()){
+            return response()->json([
+                'status' => false,
+                'error' => $validator->errors()->toArray(),
+            ], 404);
+        }
 
         $pegawai = Pegawai::create([
             'nama' => $request->nama,
@@ -82,11 +90,11 @@ class ApiController extends Controller
                 'status' => true,
                 'message' => 'Pegawai berhasil ditambahkan',
                 'data' => $pegawai, $kontrak
-            ], 200);
+            ], 201);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'failed'
+                'message' => 'failed',
             ], 400);
         }
     }
@@ -135,7 +143,7 @@ class ApiController extends Controller
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Pegawai tidak berhasil dihapus'
+                'message' => 'failed'
             ], 400);
         }
     }
